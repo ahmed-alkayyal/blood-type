@@ -6,19 +6,13 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Facade\FlareClient\Api;
+use App\Traits\apiResponseTraits;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    private function apiResponse($status,$massage,$data=null){
-        $response=[
-            'status'    =>$status,
-            'massage'   =>$massage,
-            'data'      =>$data
-        ];
-        return response()->json($response);
-    }
+    use apiResponseTraits;
     public function register(Request $request){
         // return $request->all();
         $validator=validator()->make($request->all(),[

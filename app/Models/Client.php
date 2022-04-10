@@ -9,7 +9,7 @@ class Client extends Model
 
     protected $table = 'clients';
     public $timestamps = true;
-    protected $fillable = array('name', 'email', 'd_o_b', 'blood_type_id', 'last_donation_date', 'phone', 'password', 'api_token', 'city_id');
+    protected $fillable = array('name', 'email', 'd_o_b', 'blood_type_id', 'last_donation_date', 'phone', 'password', 'city_id');
 
     protected $hidden = [
         'password', 'api_token'

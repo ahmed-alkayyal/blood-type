@@ -21,9 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::group(['prefix'=>'v1','namespace'=>'Api'],function ()
 {
-    Route::get('city',[MainController::class,'city']);
-    Route::get('governorate',[MainController::class,'governorate']);
-    Route::get('bloodTupe',[MainController::class,'bloodTupe']);
+    Route::get('citys',[MainController::class,'citys']);
+    Route::get('governorates',[MainController::class,'governorates']);
+    Route::get('bloodTypes',[MainController::class,'bloodTypes']);
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);
     Route::group(['middleware'=>'auth:api'],function(){

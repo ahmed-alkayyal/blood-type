@@ -8,25 +8,20 @@ use App\Models\Governorate;
 use App\Models\BloodType;
 use App\Models\Post;
 use App\Models\Category;
+use App\Traits\apiResponseTraits;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    private function apiResponse($status,$massage,$data=null){
-        $response=[
-            'status'    =>$status,
-            'massage'   =>$massage,
-            'data'      =>$data
-        ];
-        return response()->json($response);
-    }
-    public function governorate()
+    use apiResponseTraits;
+
+    public function governorates()
     {
         $governorate=Governorate::all();
         return $this->apiResponse(1,'success',$governorate);
     }
-    public function city(Request $request){
+    public function citys(Request $request){
         $city=City::where(function($query) use($request) {
             if($request->has('governorate_id')){
                 $query->where('governorate_id',$request->governorate_id);
@@ -34,7 +29,7 @@ class MainController extends Controller
         })->get();
         return $this->apiResponse(1,'success',$city);
     }
-    public function bloodTupe(Request $request)
+    public function bloodTypes(Request $request)
     {
         $bloodtube=BloodType::all();
         return $this->apiResponse(1,'success',$bloodtube);
@@ -48,7 +43,7 @@ class MainController extends Controller
             if($request->has('category_id')){
                 $query->where('category_id',$request->category_id);
             }
-        })->get();
+        })->with('Category')->paginate(3);
         return $this->apiResponse(1,'success',$posts);
     }
 }
