@@ -29,6 +29,11 @@ Route::group(['prefix'=>'v1','namespace'=>'Api'],function ()
     Route::group(['middleware'=>'auth:api'],function(){
         Route::get('category',[MainController::class,'category']);
         Route::get('posts',[MainController::class,'posts']);
+        Route::get('showData',[AuthController::class,'showData']);
+        Route::get('updateProfile',[AuthController::class,'updateProfile']);
+        Route::Post('reset',[AuthController::class,'reset']);
+        Route::Post('Password',[AuthController::class,'Password']);
+        Route::Post('notificationSetting',[AuthController::class,'notificationSetting']);
     });
 });
 // pass 012454545545

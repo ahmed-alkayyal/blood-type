@@ -17,21 +17,21 @@ class Client extends Model
 
     public function bloodType()
     {
-        return $this->belongsTo('App\Models\BloodType');
+        return $this->belongsToMany('App\Models\BloodType');
     }
 
-    public function City()
+    public function governorate()
     {
-        return $this->belongsTo('App\Models\City');
+        return $this->belongsToMany('App\Models\Governorate');
     }
 
     public function post()
     {
-        return $this->belongsTo('App\Models\Post');
+        return $this->belongsToMany('App\Models\Post');
     }
 
     public function notification()
     {
-        return $this->belongsTo('App\Models\Notification');
+        return $this->belongsToMany('App\Models\Notification');
     }
 }

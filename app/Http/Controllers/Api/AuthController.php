@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use Facade\FlareClient\Api;
 use App\Traits\apiResponseTraits;
+use App\Mail\ResetPassword;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -74,5 +76,100 @@ class AuthController extends Controller
         // // }
         // return $client;
         // النتيحه معايه بترجع ب1 لما برجه بالكلاينت ولما بتشك عليها بترجع ب0
+    }
+    public function showData(Request $request){
+        $client=Client::where('id',$request->id)->first();
+        return $this->apiResponse(1,'success',$client);
+    }
+    public function updateProfile(Request $request){
+        $client=Client::where('id',$request->id)->first();
+        if($client){
+            $client->name=$request->name;
+            $client->email=$request->email;
+            $client->d_o_b=$request->d_o_b;
+            $client->blood_type_id=$request->blood_type_id;
+            $client->last_donation_date=$request->last_donation_date;
+            $client->phone=$request->phone;
+            $client->city_id=$request->city_id;
+            $client->password=$request->password;
+            $client->save();
+        }else{
+            return $this->apiResponse(0,'لا يوجد عميل بهذهي البيانات',$client);
+        }
+        return $this->apiResponse(1,'success',$client);
+    }
+    public function reset(Request $request){
+        $validator=validator()->make($request->all(),[
+            'phone'=>'required',
+        ]);
+        if($validator->fails()){
+            return $this->apiResponse(0,$validator->errors()->first(),$validator->errors());
+        }
+        $user=Client::where('phone',$request->phone)->first();
+        if($user){
+            $code=rand(1111,9999);
+            $user->pin_code=$code;
+            $user->save();
+            $update=$user->update(['pin_code'=>$code]);
+            if($update){
+
+                Mail::to($request->user())
+                    ->bcc('ahmedmohammedalkayyal@gmail.com')
+                    ->send(new ResetPassword($code));
+                    return $this->apiResponse(1,'برجاء فحص الايميل',[
+                        'pin_code'=>$code,
+                        'email'=>$user->email,
+                    ]);
+            }else{
+                return $this->apiResponse(0,'حدث خطأ ما');
+            }
+
+        }
+        return $this->apiResponse(0,'لا يوجد عميل بهذهي البيانات');
+    }
+    public function Password(Request $request){
+        $validator=validator()->make($request->all(),[
+            'phone'=>'required',
+            'pin_code'=>'required',
+            'pass'=>'required',//|confirmed
+        ]);
+        if($validator->fails()){
+            return $this->apiResponse(0,$validator->errors()->first(),$validator->errors());
+        }
+        $user=Client::where('pin_code',$request->pin_code)->where('pin_code','!=',0)->
+                            where('phone',$request->phone)->first();
+        if($user){
+            $user->password=bcrypt($request->pass);
+            $user->pin_code=null;
+            $user->save();
+            if($user->save()){
+                return $this->apiResponse(1,'تم التغير بنجاح');
+            }else{
+                return $this->apiResponse(0,"هناك خطأ ما");
+            }
+
+        }else{
+            return $this->apiResponse(0,'هذا الكود خطأ');
+        }
+    }
+    public function notificationSetting(Request $request){
+        $validator=validator()->make($request->all(),[
+            'bloodType'=>'required',
+            'governorate'=>'required',
+        ]);
+        if($validator->fails()){
+            return $this->apiResponse(0,$validator->errors()->first(),$validator->errors());
+        }
+        if($request->has('bloodType')){
+            $request->user()->bloodType()->sync($request->bloodType);
+        }
+        if($request->has('governorate')){
+            $request->user()->governorate()->sync($request->governorate);
+        }
+        $data=[
+            'City'=>$request->user()->governorate()->pluck('governorate.id')->toArray(),
+            'bloodType'=>$request->user()->bloodType()->pluck('bloodType.id')->toArray(),
+        ];
+        return $data;
     }
 }
