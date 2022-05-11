@@ -78,11 +78,11 @@ class AuthController extends Controller
         // النتيحه معايه بترجع ب1 لما برجه بالكلاينت ولما بتشك عليها بترجع ب0
     }
     public function showData(Request $request){
-        $client=Client::where('id',$request->id)->first();
+        $client=$request->user();
         return $this->apiResponse(1,'success',$client);
     }
-    public function updateProfile(Request $request){
-        $client=Client::where('id',$request->id)->first();
+    public function update_profile(Request $request){
+        $client=$request->user();
         if($client){
             $client->name=$request->name;
             $client->email=$request->email;
@@ -109,7 +109,7 @@ class AuthController extends Controller
         if($user){
             $code=rand(1111,9999);
             $user->pin_code=$code;
-            $user->save();
+            // $user->save();
             $update=$user->update(['pin_code'=>$code]);
             if($update){
 
@@ -131,7 +131,12 @@ class AuthController extends Controller
         $validator=validator()->make($request->all(),[
             'phone'=>'required',
             'pin_code'=>'required',
-            'pass'=>'required',//|confirmed
+            'pass'=>'required|confirmed',
+            /**
+             * //|confirmed
+             *  لما باجي اعمل كده بضيف حقل للتاكيد بسميه
+             *pass_confirm
+             */
         ]);
         if($validator->fails()){
             return $this->apiResponse(0,$validator->errors()->first(),$validator->errors());
@@ -154,21 +159,21 @@ class AuthController extends Controller
     }
     public function notificationSetting(Request $request){
         $validator=validator()->make($request->all(),[
-            'bloodType'=>'required',
-            'governorate'=>'required',
+            'bloodTypes'=>'required',
+            'governorates'=>'required',
         ]);
         if($validator->fails()){
             return $this->apiResponse(0,$validator->errors()->first(),$validator->errors());
         }
-        if($request->has('bloodType')){
-            $request->user()->bloodType()->sync($request->bloodType);
+        if($request->has('bloodTypes')){
+            $request->user()->bloodTypes()->sync($request->bloodTypes);
         }
-        if($request->has('governorate')){
-            $request->user()->governorate()->sync($request->governorate);
+        if($request->has('governorates')){
+            $request->user()->governorates()->sync($request->governorates);
         }
         $data=[
-            'City'=>$request->user()->governorate()->pluck('governorate.id')->toArray(),
-            'bloodType'=>$request->user()->bloodType()->pluck('bloodType.id')->toArray(),
+            'governorates'=>$request->user()->governorates()->pluck('governorates.id')->toArray(),
+            'bloodTypes'=>$request->user()->bloodTypes()->pluck('blood_types.id')->toArray(),
         ];
         return $data;
     }
