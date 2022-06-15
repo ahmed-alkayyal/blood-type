@@ -115,6 +115,38 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{url(route('categorie.index'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            categorie
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url(route('posts.index'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            posts
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url(route('setting.index'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            setting
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{url(route('donationrequest.create'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            donationrequest
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="pages/calendar.html" class="nav-link">
                         <i class="nav-icon far fa-calendar-alt"></i>
                         <p>
