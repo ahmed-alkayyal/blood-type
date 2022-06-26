@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\settingController;
 use App\Http\Controllers\donationRequestController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\front\mainController;
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::group(['middleware' => 'auth'], function (){
     Route::resource('setting',settingController::class);
     Route::resource('donationrequest',donationRequestController::class);
     Route::resource('user',userController::class);
+    Route::resource('roles',RoleController::class);
 });
 
 Auth::routes();

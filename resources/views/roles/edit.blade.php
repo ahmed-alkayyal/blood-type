@@ -1,6 +1,6 @@
 @extends('dashbord.app')
 @section('bageName')
-    edit user
+    edit role
 @endsection
 @section('content')
 
@@ -13,7 +13,7 @@
             </div>
             <div class="card-body">
                 {!! Form::model($model,[
-                    'action'    => ['App\Http\Controllers\userController@update',$model->id],
+                    'action'    => ['App\Http\Controllers\RoleController@update',$model->id],
                     'method'    =>'Put',
                     ]) !!}
                 <div class="form-group">
@@ -22,26 +22,16 @@
                         'class'=>'form-control',
                     ]);!!}
                 </div>
-                <div class="form-group">
-                    <label for="email">email</label>
-                    {!!Form::email('email',null,[
-                        'class'=>'form-control',
-                    ]);!!}
+                <div class="row">
+                    @foreach($permissions as $permission)
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                {!!Form::checkbox('permissions[]',$permission->id,$model->hasPermissionTo($permission->id));!!}
+                                <label for="name">{{$permission->name}}</label>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="form-group">
-                    <label for="password">password</label>
-                    {!!Form::password('password',[
-                        'class'=>'form-control',
-                    ]);!!}
-                </div>
-                <div class="form-group">
-                    <label for="role_id">Choose Role</label>
-                    {!!Form::select('role_id',$roles,null,[
-                        'class'=>'form-control',
-                        'placeholder'=>'Choose role',
-                    ]);!!}
-                </div>
-
                 <div class="form-group">
                     <button class="btn btn-success" type="submit" style="margin: 20px 0">edit</button>
                 </div>

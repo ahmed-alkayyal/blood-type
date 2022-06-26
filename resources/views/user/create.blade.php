@@ -1,5 +1,5 @@
 @extends('dashbord.app')
-@inject('model', 'App\Models\User')
+
 @section('bageName')
 Create user
 @endsection
@@ -39,8 +39,15 @@ Create user
                                 </div>
                                 <div class="form-group">
                                     <label for="password">password</label>
-                                    {!!Form::password('password',null,[
+                                    {!!Form::password('password',[
                                         'class'=>'form-control',
+                                    ]);!!}
+                                </div>
+                                <div class="form-group">
+                                    <label for="role_id">Choose Role</label>
+                                    {!!Form::select('role_id',$roles,null,[
+                                        'class'=>'form-control',
+                                        'placeholder'=>'Choose role',
                                     ]);!!}
                                 </div>
                                 <div class="form-group">
