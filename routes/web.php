@@ -8,6 +8,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\settingController;
 use App\Http\Controllers\donationRequestController;
+use App\Http\Controllers\userController;
 use App\Http\Controllers\front\mainController;
 /*
 |--------------------------------------------------------------------------
@@ -26,21 +27,17 @@ Route::group(['namespace'=>'front'],function(){
 Route::get('home',function(){
     return view('dashbord.home');
 });
-Route::resource('governorate',GovernorateController::class);
-Route::resource('city',CiteController::class);
-Route::resource('categorie',CategorieController::class);
-Route::resource('posts',PostController::class);
-Route::resource('setting',settingController::class);
-Route::resource('donationrequest',donationRequestController::class);
+Route::group(['middleware' => 'auth'], function (){
+    Route::resource('governorate',GovernorateController::class);
+    Route::resource('city',CiteController::class);
+    Route::resource('categorie',CategorieController::class);
+    Route::resource('posts',PostController::class);
+    Route::resource('setting',settingController::class);
+    Route::resource('donationrequest',donationRequestController::class);
+    Route::resource('user',userController::class);
+});
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/auth',function(){
+    return view('auth.login');
+});

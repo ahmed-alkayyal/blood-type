@@ -131,6 +131,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{url(route('user.index'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            user
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{url(route('setting.index'))}}" class="nav-link">
                         <i class="nav-icon fas fa-list-alt"></i>
                         <p>
