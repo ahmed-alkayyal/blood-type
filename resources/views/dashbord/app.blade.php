@@ -139,6 +139,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{url(route('roles.index'))}}" class="nav-link">
+                        <i class="nav-icon fas fa-list-alt"></i>
+                        <p>
+                            Roles
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{url(route('setting.index'))}}" class="nav-link">
                         <i class="nav-icon fas fa-list-alt"></i>
                         <p>
@@ -216,6 +224,6 @@
 <!-- AdminLTE App -->
 <script src="{{asset("dist/js/adminlte.min.js")}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset("dist/js/demo.js")}}"></script>
+{{--<script src="{{asset("dist/js/demo.js")}}"></script>--}}
 </body>
 </html>
